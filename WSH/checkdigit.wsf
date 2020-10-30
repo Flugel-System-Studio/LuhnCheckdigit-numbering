@@ -1,0 +1,73 @@
+<job>
+<script language="VBScript">
+function prompt(message, title, value)
+    prompt = InputBox(message, title, value)
+end function
+
+</script>
+
+<script language="JScript">
+var reg = new RegExp('^\\d+$');
+do{
+    var inputNum = prompt('生成したいカード番号を入力してください!', 'ルーンズチェックデジット生成', '数字を入力してください');
+    //WScript.Echo(inputNum); //入力された内容が表示される
+    //WScript.Echo(String(inputNum).length);
+　　if ('数字を入力してください' === inputNum){
+        WScript.Quit(1);
+    }else if (reg.test(inputNum) === false){
+        WScript.Echo(reg.test(inputNum));
+        var sh = WScript.CreateObject("WScript.Shell");
+        var ret = sh.Popup("文字が入力されています", 0, "error", 5+48+0);
+    }else if(String(inputNum).length !== 15){
+        var sh = WScript.CreateObject("WScript.Shell");
+        var ret = sh.Popup("桁数が間違ってます", 0, "error", 5+48+0);
+    }
+}while(ret === 4);
+
+if (ret === 2){
+    WScript.Quit(1);
+}
+
+/**
+ * メイン処理
+ */
+/* ルーンズチェック */
+// チェックデジット番号
+var checkDigit = luhn_caclulate(inputNum);
+// カード番号16桁番号
+var cardNumber = '' + inputNum + checkDigit;
+var sh = WScript.CreateObject("WScript.Shell");
+var ret = sh.Popup(cardNumber, 0, "カード番号16桁番号", 0+0+0);
+//WScript.Echo('カード番号16桁番号： ' + cardNumber);
+
+
+/*
+    ここから、LuhnCheckdigt設定ロジック
+*/
+/* luhn_checksum
+ * Implement the Luhn algorithm to calculate the Luhn check digit.
+ * Return the check digit.
+ */
+function luhn_checksum(code) {
+    var len = code.length;
+    var parity = len % 2;
+    var sum = 0;
+    for (var i = len - 1; i >= 0; i--) {
+        var d = parseInt(code.charAt(i))
+        if (i % 2 == parity) { d *= 2 }
+        if (d > 9) { d -= 9 }
+        sum += d;
+    }
+    return sum % 10;
+}
+
+/* luhn_caclulate
+ * Return a full code (including check digit), from the specified partial code (without check digit).
+ */
+function luhn_caclulate(partCode) {
+    var checkSum = luhn_checksum(partCode + "0");
+    return checkSum == 0 ? 0 : 10 - checkSum;
+}
+
+</script>
+</job>
