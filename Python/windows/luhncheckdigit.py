@@ -13,6 +13,15 @@ class TkinterClass:
         root.title('LuhnCheckdigit-numbering')
         root.geometry("525x550")
 
+        # メニューバーの作成
+        menubar = tk.Menu(root)
+        root.configure(menu = menubar)
+        # ファイルメニュー
+        filemenu = tk.Menu(menubar, tearoff = 0)
+        menubar.add_cascade(label = "File", menu = filemenu)
+        # 終了
+        filemenu.add_command(label = "Exit", command = lambda: root.destroy())
+
         # 入力欄の作成
         label1 = tk.Label(root, text='入力', font=('', 20))
         label1.place(x=40, y=100)
