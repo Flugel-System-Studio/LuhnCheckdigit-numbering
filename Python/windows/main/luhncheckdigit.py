@@ -18,7 +18,7 @@ class TkinterClass:
         root.configure(menu = menubar)
         # ファイルメニュー
         filemenu = tk.Menu(menubar, tearoff = 0)
-        menubar.add_cascade(label = "File", menu = filemenu)
+        menubar.add_cascade(label = "Menu", menu = filemenu)
         # 終了
         filemenu.add_command(label = "Exit", command = lambda: root.destroy())
 
@@ -51,17 +51,24 @@ class TkinterClass:
 
         root.mainloop()
 
+    """Sumary
+    実行ボタン押下
 
+    Parameters
+    ----------
+    event : tkinter.Event
+    
+    """
     def button_click(self, event):
         input_value = self.input_box.get()
-
         if len(input_value) != 15:
             messagebox.showerror("ERROR", "桁数が間違ってます")
         elif re.search("[0-9]{15}", input_value) is None:
             messagebox.showerror("ERROR", "数値以外が入力されてます")
         else:
-            output_checkdigit_value = generate(input_value)
-            output_total_vale = append(input_value)
+            total_value = self.check_digit(input_value)
+            output_checkdigit_value = total_value[0]
+            output_total_vale = total_value[1]
 
             # チェックデジット
             self.check_box.delete(0, tk.END)
@@ -71,6 +78,27 @@ class TkinterClass:
             self.out_box.delete(0, tk.END)
             self.out_box.insert(tk.END, output_total_vale)
 
+    """Sumary
+    チェックデジットの値を取得する
+
+    Parameters
+    ----------
+    input_value : int
+        対象の入力データ
+
+    Returns
+    -------
+    output_checkdigit : int
+        対象のチェックデジット
+    output_total_value : int
+        対象の入力データとチェックデジットをアペンドした情報
+    """
+    def check_digit(self, input_value):
+        # チェックデジットの生成
+        output_checkdigit_value = generate(input_value)
+        # inputにチェックデジットを生成
+        output_total_vale = append(input_value)
+        return output_checkdigit_value, output_total_vale
 
 if __name__ == '__main__':
     TkinterClass()
