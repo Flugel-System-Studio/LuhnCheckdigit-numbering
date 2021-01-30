@@ -1,3 +1,6 @@
 Python/windows/build/
 Python/windows/__pycache__/
 Python/windows/dist/
+Python/gui/__pycache__/
+Python/gui/build/
+Python/gui/dist/
